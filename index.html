@@ -119,24 +119,28 @@
     const card = document.getElementById("card");
 
     // NO button moves randomly inside card
-    function moveNoButton() {
-      const cardRect = card.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+    // NO button moves randomly but stays inside card
+function moveNoButton() {
+    const cardRect = card.getBoundingClientRect();
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
 
-      const maxX = card.clientWidth - btnRect.width;
-      const maxY = card.clientHeight - btnRect.height;
+    // Max X/Y relative to card
+    const maxX = card.clientWidth - btnWidth;
+    const maxY = card.clientHeight - btnHeight;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+    // Random position inside card
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
+    // Apply position relative to card
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
 
-    // Move NO when mouse comes near
-    noBtn.addEventListener("mousemove", moveNoButton);
-    noBtn.addEventListener("mouseover", moveNoButton);
-
+// Move NO button when mouse is near
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("mousemove", moveNoButton);
     // YES button click
     yesBtn.addEventListener("click", () => {
       yesBtn.style.display = "none";
