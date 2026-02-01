@@ -16,34 +16,40 @@
       justify-content: center;
       overflow: hidden;
     }
+
     .card {
-  background: #fff;
-  padding: 50px 40px;      /* a little more padding for wide card */
-  border-radius: 20px;
-  width: 98%;              /* almost full screen width */
-  max-width: 1200px;       /* allows it to be very wide on desktop */
-  min-width: 320px;        /* mobile friendly */
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-  position: relative;
-  overflow: hidden;
-}
+      background: #fff;
+      padding: 50px 40px;
+      border-radius: 20px;
+      width: 98%;
+      max-width: 1200px;
+      min-width: 320px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
     .emoji { font-size: 60px; margin-bottom: 15px; }
-    h1 { font-size: 22px; margin-bottom: 30px; color: #333; }
+    h1 { font-size: 26px; margin-bottom: 30px; color: #333; }
     .buttons { position: relative; height: 80px; }
+
     button {
       padding: 12px 28px;
       border-radius: 30px;
       border: none;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
       position: absolute;
       transition: all 0.2s ease;
     }
+
     #yesBtn { background: #ff4d79; color: white; left: 25%; }
     #yesBtn:hover { transform: scale(1.1); }
+
     #noBtn { background: #eee; color: #555; left: 55%; }
-    .hint { margin-top: 20px; font-size: 13px; color: #888; }
+
+    .hint { margin-top: 20px; font-size: 14px; color: #888; }
 
     /* Hearts / decorations */
     .hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 9999; }
@@ -75,7 +81,7 @@
       display: none;
       text-align: center;
       color: #ff4d79;
-      font-size: 24px;
+      font-size: 28px;
       animation: fadeIn 1.5s ease forwards;
     }
     @keyframes fadeIn {
@@ -86,7 +92,7 @@
 </head>
 <body>
 
-  <div class="card">
+  <div class="card" id="card">
     <div class="emoji">🐱💗</div>
     <h1>BABE, will you be my Valentine?</h1>
 
@@ -99,7 +105,7 @@
     <div class="loveMessage" id="loveMessage">
       💕 YAAAAY BABE! 💕<br>
       You just made my day! 💖<br>
-      I LOVE YOU 💌
+      Happy Valentine’s 💌
     </div>
   </div>
 
@@ -110,26 +116,28 @@
     const yesBtn = document.getElementById("yesBtn");
     const heartsContainer = document.getElementById("heartsContainer");
     const loveMessage = document.getElementById("loveMessage");
-    const card = document.querySelector(".card");
+    const card = document.getElementById("card");
 
-    // NO button logic: moves when cursor is close, cannot be clicked
-    noBtn.addEventListener("mousemove", (e) => {
-      const rect = noBtn.getBoundingClientRect();
-      const offset = 80; // distance threshold
-      const distX = e.clientX - (rect.left + rect.width / 2);
-      const distY = e.clientY - (rect.top + rect.height / 2);
+    // NO button moves randomly inside card
+    function moveNoButton() {
+      const cardRect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
 
-      if (Math.abs(distX) < offset && Math.abs(distY) < offset) {
-        const maxX = card.clientWidth - noBtn.offsetWidth;
-        const maxY = card.clientHeight - noBtn.offsetHeight;
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
-      }
-    });
+      const maxX = card.clientWidth - btnRect.width;
+      const maxY = card.clientHeight - btnRect.height;
 
-    // YES button logic
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    // Move NO when mouse comes near
+    noBtn.addEventListener("mousemove", moveNoButton);
+    noBtn.addEventListener("mouseover", moveNoButton);
+
+    // YES button click
     yesBtn.addEventListener("click", () => {
       yesBtn.style.display = "none";
       noBtn.style.display = "none";
